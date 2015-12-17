@@ -1,0 +1,84 @@
+civil war
+violence
+violent
+conflict
+fight*
+killing
+kill
+battle
+massacre
+injury
+butchery
+explosion
+car bombs
+bomb
+corpse
+abduction
+ambush*
+suicide
+suicide bomber*
+rape
+persecution
+assassination
+terror*
+militia
+military base
+attack*
+assault
+gang
+crime
+theft
+clash*
+fighter*
+mortar
+rocket
+siege/blockade
+shelling
+shells
+force*
+bomb
+warring
+gun*
+soldiers
+rebel
+unrest
+troubled
+insurgent/revolutionary
+dead/killed
+crisis
+victim
+detention/arrest
+detention
+detainee
+detainee
+prisoner
+prison
+detention centre
+indiscriminate
+checkpoint
+checkpoint
+operation
+torture
+elements
+execute
+execution
+withdrawal
+shelling
+feud
+weapons
+kidnapping
+body
+ransom
+ammunition
+martyr
+martyred
+roadside bomb
+injured
+rounds
+patrol
+victim
+target
+target (n)
+fighter*
+fighter
+fight
