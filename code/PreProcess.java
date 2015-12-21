@@ -1,3 +1,5 @@
+package dataMining;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,8 +10,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 /**
- * Contains the code to pre-process xml files
+ * this class is responsible for pre processing the files and store the preprocessed files in a new folder
+ * @author raghavender sahdev
  */
 public class PreProcess 
 {
@@ -22,30 +26,25 @@ public class PreProcess
 	 */
 	public PreProcess()
 	{
-		punctuations.add(',');
-		punctuations.add('.');
-		punctuations.add(';');
-		punctuations.add(':');
-		punctuations.add('\\');
-		punctuations.add('/');
-		punctuations.add('!');	
-		punctuations.add('\'');	
-		punctuations.add('\"');
-		punctuations.add('"');
-		punctuations.add('\n');
-		punctuations.add('*');
-		punctuations.add('(');
-		punctuations.add(')');
-		punctuations.add('1');
-		punctuations.add('2');
-		punctuations.add('3');
-		punctuations.add('4');
-		punctuations.add('5');
-		punctuations.add('6');
-		punctuations.add('7');
-		punctuations.add('8');
-		punctuations.add('9');
-		punctuations.add('0');	
+		punctuations.add(',');		punctuations.add('.');
+		punctuations.add(';');		punctuations.add(':');
+		punctuations.add('\\');		punctuations.add('/');
+		punctuations.add('!');	    punctuations.add('\'');	
+		punctuations.add('\"');		punctuations.add('"');
+		punctuations.add('\n');		punctuations.add('*');
+		punctuations.add('(');		punctuations.add(')');
+		punctuations.add('1');		punctuations.add('2');
+		punctuations.add('3');		punctuations.add('4');
+		punctuations.add('5');		punctuations.add('6');
+		punctuations.add('7');		punctuations.add('8');
+		punctuations.add('9');		punctuations.add('0');
+		punctuations.add(']');		punctuations.add('[');
+		punctuations.add('}');		punctuations.add('{');
+		punctuations.add('~');		punctuations.add('?');
+		punctuations.add('-');		punctuations.add('@');
+		punctuations.add('#');		punctuations.add('$');
+		punctuations.add('%');		punctuations.add('^');
+		punctuations.add('&');	
 	}
 	
 	/**
@@ -167,8 +166,8 @@ public class PreProcess
 		File folder = new File(corpusPath);
 		File[] listOfFiles = folder.listFiles();
 		ArrayList<String> filePaths = new ArrayList<String>();
-		int NUM_FILES = 10000;
-		for(int i=0 ; i<NUM_FILES ; i++)
+		int NUM_FILES = listOfFiles.length;
+		for(int i=0 ; i<NUM_FILES-2 ; i++)
 		{
 			if(listOfFiles[i].isFile())
 			{
@@ -204,8 +203,8 @@ public class PreProcess
 					{
 						String processed2 = tester.preprocess(processThis);
 						//System.out.println(processed2+" \n "+date);
-						String file_number = String.format("%08d", i+1);
-						FileWriter fp = new FileWriter("/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/tester"+file_number+".txt");
+						String file_number = String.format("%06d", i+1);
+						FileWriter fp = new FileWriter("/home/sahdev/Desktop/Fall2015/samples/sample"+file_number+".txt");
 						fp.write(date + "\n" + processed2);
 						fp.close();					
 					}
