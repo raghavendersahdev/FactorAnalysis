@@ -2,7 +2,11 @@ package dataMining;
 
 import java.io.*;
 import java.util.*;
-
+/**
+ * this file concatinates all the preprocessed files for being used next to compute the Word Embeddings of each word in the vocabulary
+ * @author raghavender sahdev
+ *
+ */
 public class PreProcess2 
 {	
 	/**
