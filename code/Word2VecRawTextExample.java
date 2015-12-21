@@ -15,11 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * 
+ * computes the word embedding for each candidate word in the corpus
+ * @author raghavender sahdev modified code from internet
+ *
  */
 public class Word2VecRawTextExample 
 {
@@ -31,7 +34,6 @@ public class Word2VecRawTextExample
 
     	long time1 = System.currentTimeMillis();
     	//String filePath = new ClassPathResource("/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/sample000001.txt").getFile().getAbsolutePath();
-
     	String filePath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/output_file.txt";
         log.info("Load & Vectorize Sentences....");
         // Strip white space before and after for each line
@@ -60,12 +62,35 @@ public class Word2VecRawTextExample
 
         log.info("Writing word vectors to text file....");
         // Write word
-        WordVectorSerializer.writeWordVectors(vec, "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/pathToWriteto.txt");
+        WordVectorSerializer.writeWordVectors(vec, "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/word2vec.txt");
 
-        log.info("Closest Words:");
-        Collection<String> lst = vec.wordsNearest("day", 10);
-        System.out.println(lst);
         long time2 = System.currentTimeMillis();
         System.out.println(time2-time1);
-    }
+        
+        log.info("Closest Words:");
+        Collection<String> lst = vec.wordsNearest("violence", 100);
+        System.out.println(lst);
+        
+        String meta_data_path = "";
+        BufferedWriter br = new BufferedWriter(new FileWriter(meta_data_path));
+        
+        
+        br.close();
+        
+        
+        long time3 = System.currentTimeMillis();
+        System.out.println(time3-time1);
+    }    
+    
+    /* following are the top 100 similar words to violence lind, guilty, kidnapping, meade, pleaded, 
+    manning, rohingya, denise, suu, murder, convicted, conspiring, raped, systematic, remanded, aiding, 
+    genocide, rape, charges, accused, allegations, muslim, crimes, robbery, plead, bail, parole, bodily, 
+    perpetrators, colonel, charged, antigovernment, boko, commit, kuala, innocent, assault, courtmartial, 
+    alqaeda, offenses, kyi, killings, assassination, sectarian, adultery, probe, intent, srebrenica, 
+    conspiracy, massacre, premeditated, attacks, mubarak, haram, defendant, mexico, murdering, abetting, 
+    militant, counts, sexual, unrest, verdict, torture, allegedly, brar, laden, pinterest, prosecutors, 
+    assaulted, stoning, alqaida, gang, lumpur, false, kyis, osama, protesting, kurds, verdicts, traitor, 
+    prostitution, manslaughter, victims, raping, espionage, tortured, killing, offences, abused, acquitted, 
+    theft, murdered, antisecrecy, ladens, motivated, offence, illegal, precedent, wikileaks
+    */
 }
