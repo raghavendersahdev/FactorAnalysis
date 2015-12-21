@@ -1,3 +1,4 @@
+package dataMining;
 import java.io.*;
 import java.util.*;
 
@@ -41,17 +42,37 @@ public class PMI
 	public double computePMI(String seed, String doc_word, String filePath) throws IOException
 	{
 		int word_window = 20; // this specifies the window size for computing the PMI
-		int p_x = 0; // for seed word
-		int p_y = 0; // for doc_word
-		int p_xy = 0; // for both the seed and the doc word
+		float p_x = 0; // for seed word
+		float p_y = 0; // for doc_word
+		float p_xy = 0; // for both the seed and the doc word
+		int wrd_cnt = 0;
+		int seed_cnt = 0;
+		int doc_word_cnt = 0;
+		int together_cnt = 0;
 		
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		String temp = "";
+		ArrayList<String> arr = new ArrayList<String>();
 		
 		while((temp = br.readLine()) != null)
 		{
-			
+			arr.add(temp);
 		}
+		// WRITE ADDITIONAL CODE FOR COMPUTING P_XY HERE BY USING WINDOW_SIZE CONCEPT
+		for(int i=0; i<arr.size() ; i++)
+		{
+			if(arr.get(i).equalsIgnoreCase(doc_word))
+			{
+				doc_word_cnt++;
+			}
+			if(arr.get(i).equalsIgnoreCase(seed))
+			{
+				seed_cnt++;
+			}
+			wrd_cnt++;
+		}
+		p_x = seed_cnt / wrd_cnt;
+		p_y = doc_word_cnt / wrd_cnt;
 		
 		br.close();
 		
