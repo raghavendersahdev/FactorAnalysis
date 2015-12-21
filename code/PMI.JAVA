@@ -1,7 +1,11 @@
 package dataMining;
 import java.io.*;
 import java.util.*;
-
+/**
+ * 
+ * @author raghavender sahdev
+ *
+ */
 public class PMI 
 {
 	public static ArrayList<String> seedWords = new ArrayList<String>();
