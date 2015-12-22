@@ -174,7 +174,7 @@ public class Similarities
 		// $$$$$$$$ uncomment the following function call FOR FINAL TESTING
 		similarities = tester.getSimilarities(seed_words_size, vocabulary_size, vectors, tester);
 		
-		String similarities_file = "";
+		String similarities_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/cosineSimilarities.txt";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(similarities_file));
 		for(int i=0 ; i<seed_words_size ; i++)
 		{
@@ -219,19 +219,25 @@ public class Similarities
 		double score[] = new double[NUM_FILES];
 		for(int i=0 ; i<NUM_FILES ;i++)
 		{
-			score[i] = 0.0;
+			score[i] = 0.0d;
 		}
 		
 		
-		for(int i=0 ; i<1 ; i++)
+		long time2 = System.currentTimeMillis();
+		System.out.println("Time taken: "+(time2-time1));
+		
+		for(int i=0 ; i<10 ; i++)
 		{		
 			int temp_wrd_cnt=0;
+			tkn = new StringTokenizer(content.get(i));	
+			String doc_word = tkn.nextToken();
+			temp_wrd_cnt = tkn.countTokens();
 			for(int j=0 ; j<seed_words_size ; j++)
 			{
-				tkn = new StringTokenizer(content.get(i));				
+				
 				while(tkn.hasMoreTokens())
 				{
-					String doc_word = tkn.nextToken();
+					
 					
 					int word_index = tester.vocabulary.indexOf(doc_word);
 					int seed_index = tester.seed_words.indexOf(tester.seed_words.get(j));
@@ -239,20 +245,22 @@ public class Similarities
 						continue;
 					
 					score[i] = score[i] + similarities[seed_index][word_index];
+					;
 				}
-				temp_wrd_cnt = tkn.countTokens();
 			}
+			//System.out.println(" "+score[i]);
 			score[i] = score[i] / temp_wrd_cnt;
+			//System.out.println(" "+score[i]);
 		}
 		
 		String score_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/scores.txt";
 		BufferedWriter bw2 = new BufferedWriter(new FileWriter(score_file));
+		
 		for(int i=0 ; i<score.length ; i++)
 			bw2.write(score[i]+" ");
 		bw2.close();
-		long time2 = System.currentTimeMillis();
-		System.out.println(time2-time1);
-		
+		long time3 = System.currentTimeMillis();
+		System.out.println("Time taken: "+(time3-time1));
 		
 		/*
 		String temp_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/word2vec_test.txt";
