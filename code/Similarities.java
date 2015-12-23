@@ -113,8 +113,15 @@ public class Similarities
 		return sim;
 	}
 
-	public double[][] getSimilarities(int seed_words_size, int vocabulary_size, double vectors[][],Similarities tester) throws IOException
+	public double[][] getSimilarities(int seed_words_size, int vocabulary_size, double vectors[][],Similarities tester,boolean flag) throws IOException
 	{
+		
+		if(flag == true)
+		{
+			String similarity_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/similarity_array2D.txt";
+			BufferedReader br = new BufferedReader(new FileReader(similarity_path));
+			br.close();
+		}
 		String similarities_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/similarity_array2D.txt";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(similarities_file));		
 		double similarities[][] = new double[seed_words_size][vocabulary_size];		
@@ -162,7 +169,7 @@ public class Similarities
 		 * seed_words - ArrayList<String> has all the seed words read from the glossary
 		 * vocabulary - ArrayList<String> has the vocabulary generated from the word2vec file path
 		 *  
-		 *  now we need to compute the similarities between seed words and document words
+		 * now we need to compute the similarities between seed words and document words
 		 */				
 		// Start computing the seed words similarity
 		
@@ -172,7 +179,7 @@ public class Similarities
 		
 		double similarities[][] = new double[seed_words_size][vocabulary_size];
 		// $$$$$$$$ uncomment the following function call FOR FINAL TESTING
-		similarities = tester.getSimilarities(seed_words_size, vocabulary_size, vectors, tester);
+		similarities = tester.getSimilarities(seed_words_size, vocabulary_size, vectors, tester, false);
 		
 		String similarities_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/cosineSimilarities.txt";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(similarities_file));
@@ -187,8 +194,9 @@ public class Similarities
 		
 		bw.close();
 		
-		// start computing the document scores
 		
+		// start computing the document scores
+		// read file paths below
 		String corpusPath = "/home/sahdev/Desktop/Fall2015/samples";
 		File folder = new File(corpusPath);
 		File[] listOfFiles = folder.listFiles();
@@ -204,6 +212,7 @@ public class Similarities
 			}
 		}	
 		
+		// store date and content below
 		ArrayList<String> date = new ArrayList<String>();
 		ArrayList<String> content = new ArrayList<String>();
 		BufferedReader br;
@@ -214,30 +223,63 @@ public class Similarities
 			content.add(br.readLine());		
 			br.close();
 		}
+		
+		
+		// remove null files below and re-adjust NUM_FILES
+		String temp_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/temp_file.txt";
+		BufferedWriter bw3 = new BufferedWriter(new FileWriter(temp_file));
+		int nulls = 0;
+		ArrayList<String> content2 = new ArrayList<String>();
+		ArrayList<String> date2 = new ArrayList<String>();
+		
+		for(int i=0; i<NUM_FILES ; i++)
+		{
+			if(content.get(i) == null)
+			{
+				nulls++;
+				continue;
+			}
+			content2.add(content.get(i));
+			date2.add(date.get(i));
+			bw3.write(date.get(i));
+			bw3.newLine();
+			bw3.write(content.get(i));
+			bw3.newLine();
+		}
+		bw3.close();
+		NUM_FILES = NUM_FILES - nulls;
+
+		System.out.println("Non null contents: "+content2.size());
+		System.out.println("Non null dates: "+date2.size());
+		
+		
+		
 
 		StringTokenizer tkn;
 		double score[] = new double[NUM_FILES];
 		for(int i=0 ; i<NUM_FILES ;i++)
 		{
 			score[i] = 0.0d;
-		}
-		
-		
+		}		
 		long time2 = System.currentTimeMillis();
 		System.out.println("Time taken: "+(time2-time1));
+		System.out.println(content.size());
 		
-		for(int i=0 ; i<10 ; i++)
+		
+		
+		String score_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/scores.txt";
+		BufferedWriter bw2 = new BufferedWriter(new FileWriter(score_file));
+		for(int i=0 ; i<3000 ; i++)
 		{		
 			int temp_wrd_cnt=0;
-			tkn = new StringTokenizer(content.get(i));	
-			String doc_word = tkn.nextToken();
-			temp_wrd_cnt = tkn.countTokens();
+
 			for(int j=0 ; j<seed_words_size ; j++)
 			{
-				
+				tkn = new StringTokenizer(content2.get(i));	
+				temp_wrd_cnt = tkn.countTokens();
 				while(tkn.hasMoreTokens())
 				{
-					
+					String doc_word = tkn.nextToken();
 					
 					int word_index = tester.vocabulary.indexOf(doc_word);
 					int seed_index = tester.seed_words.indexOf(tester.seed_words.get(j));
@@ -249,18 +291,21 @@ public class Similarities
 				}
 			}
 			//System.out.println(" "+score[i]);
+			// here we divide by temp_wrd_cnt to get the average
 			score[i] = score[i] / temp_wrd_cnt;
-			//System.out.println(" "+score[i]);
+			bw2.write(score[i]+" "+date2.get(i));
+			bw2.newLine();
+			System.out.println(i);
 		}
 		
-		String score_file = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/scores.txt";
-		BufferedWriter bw2 = new BufferedWriter(new FileWriter(score_file));
-		
-		for(int i=0 ; i<score.length ; i++)
-			bw2.write(score[i]+" ");
 		bw2.close();
+		
 		long time3 = System.currentTimeMillis();
 		System.out.println("Time taken: "+(time3-time1));
+		
+		//computing 
+		
+		
 		
 		/*
 		String temp_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/word2vec_test.txt";
