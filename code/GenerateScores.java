@@ -37,6 +37,9 @@ public class GenerateScores
 		int mon = (int) map.get(month);
 		return mon;
 	}
+	
+	public static String violence_trend_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/violence_trend_scores.txt";
+	public static String scores_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/pmi_scores_35k.txt";
 	/**
 	 * this reads the violence scores of each document and plots the trend of violence for each day of the month
 	 * @param args
@@ -44,7 +47,7 @@ public class GenerateScores
 	 */
 	public static void main(String args[]) throws IOException
 	{
-		String scores_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/scores.txt";
+		//String scores_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/scores.txt";
 		BufferedReader br = new BufferedReader(new FileReader(scores_path));
 		
 		String temp="";
@@ -86,15 +89,21 @@ public class GenerateScores
 					scores_cnt[i]++;
 				}
 			}
+			// now we divide the scores sum by the number of documents on that specific day!
 			scores[i] = scores[i] / scores_cnt[i];
 		}
 		br.close();
+		int sum = 0;
+		for(int i=0 ; i<scores_cnt.length ; i++)
+		{
+			System.out.println("day "+(i+1)+"  "+scores_cnt[i]);
+		}
+		System.out.println(sum);;
 		
-		String violence_trend_path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/violence_trend_scores.txt";
 		BufferedWriter bw = new BufferedWriter(new FileWriter(violence_trend_path));
 		for(int i=0 ; i<scores.length ; i++)
 		{
-			bw.write(scores[i]+"     "+(i+1));
+			bw.write("day   "+(i+1)+"   " +scores[i]+"  \t "+ scores_cnt[i]);
 			bw.newLine();
 		}
 		bw.close();
