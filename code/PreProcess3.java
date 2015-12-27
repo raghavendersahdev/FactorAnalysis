@@ -18,37 +18,37 @@ import org.w3c.dom.NodeList;
 public class PreProcess3 
 {
 	public static ArrayList<String> stopWords = new ArrayList<String>();
-	public static ArrayList<Character> punctuations = new ArrayList<Character>();
-	public static String corpusPath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/2013-11";
-	public static String files_path = "/home/sahdev/Desktop/Fall2015/tester4/f"; 
+	public static HashMap<Character,Integer> punctuations = new HashMap<Character,Integer>();
+	public static String corpusPath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/replaced2";
+	public static String files_path = "/home/sahdev/Desktop/Fall2015/nov/n"; 
 	/**
 	 * constructor to initialize the punctuation array list
 	 */
 	public static void generatePunctuations()
 	{
-		punctuations.add(',');		punctuations.add('.');
-		punctuations.add(';');		punctuations.add(':');
-		punctuations.add('\\');		punctuations.add('/');
-		punctuations.add('!');	    punctuations.add('\'');	
-		punctuations.add('\"');		punctuations.add('"');
-		punctuations.add('\n');		punctuations.add('*');
-		punctuations.add('(');		punctuations.add(')');
-		punctuations.add('1');		punctuations.add('2');
-		punctuations.add('3');		punctuations.add('4');
-		punctuations.add('5');		punctuations.add('6');
-		punctuations.add('7');		punctuations.add('8');
-		punctuations.add('9');		punctuations.add('0');
-		punctuations.add(']');		punctuations.add('[');
-		punctuations.add('}');		punctuations.add('{');
-		punctuations.add('~');		punctuations.add('?');
-		punctuations.add('-');		punctuations.add('@');
-		punctuations.add('#');		punctuations.add('$');
-		punctuations.add('%');		punctuations.add('^');
-		punctuations.add('&');		punctuations.add('_');
-		punctuations.add('<');		punctuations.add('>');
-		punctuations.add('’');		punctuations.add('|');
-		punctuations.add('“');		punctuations.add('”');
-		punctuations.add('»');
+		punctuations.put(',',0);		punctuations.put('.',1);
+		punctuations.put(';',2);		punctuations.put(':',3);
+		punctuations.put('\\',4);		punctuations.put('/',5);
+		punctuations.put('!',6);	    
+		punctuations.put('\'',7);		punctuations.put('"',9);
+				punctuations.put('*',11);
+		punctuations.put('(',10);		punctuations.put(')',13);
+		punctuations.put('1',12);		punctuations.put('2',15);
+		punctuations.put('3',14);		punctuations.put('4',17);
+		punctuations.put('5',16);		punctuations.put('6',19);
+		punctuations.put('7',18);		punctuations.put('8',21);
+		punctuations.put('9',20);		punctuations.put('0',23);
+		punctuations.put(']',22);		punctuations.put('[',25);
+		punctuations.put('}',24);		punctuations.put('{',27);
+		punctuations.put('~',26);		punctuations.put('?',29);
+		punctuations.put('-',28);		punctuations.put('@',31);
+		punctuations.put('#',30);		punctuations.put('$',33);
+		punctuations.put('%',32);		punctuations.put('^',35);
+		punctuations.put('&',34);		punctuations.put('_',37);
+		punctuations.put('<',36);		punctuations.put('>',39);
+		punctuations.put('’',38);		punctuations.put('|',41);
+		punctuations.put('“',40);		punctuations.put('”',43);
+		punctuations.put('»',42);		punctuations.put('\"',44);
 	}
 	
 	
@@ -61,10 +61,10 @@ public class PreProcess3
 	{
 		
 		text = text.toLowerCase();
-		String temp = text;
+		/*String temp = text;
 		for(int i=0 ; i<text.length() ; i++)
 		{
-			if(punctuations.contains(text.charAt(i)))
+			if(punctuations.get(text.charAt(i)) != null)
 			{
 				if(text.charAt(i) == '\n')
 				{
@@ -73,8 +73,8 @@ public class PreProcess3
 				}	
 				temp = temp.replace(text.charAt(i)+"","");//.charAt(i) = "";				
 			}
-		}
-		return temp;
+		}*/
+		return text;
 	}
 	
 	/**
@@ -121,6 +121,8 @@ public class PreProcess3
 			Element eElement;
 			String processThis;
 			String date;
+			BufferedWriter fp;
+			String processed2 = "";
 			for(int i=0 ; i<NUM_FILES; i++)
 			{
 				File fXmlFile = new File(filePaths.get(i));
@@ -139,11 +141,12 @@ public class PreProcess3
 					processThis = eElement.getElementsByTagName("Text").item(0).getTextContent();
 					date = eElement.getElementsByTagName("PublicationDateTime").item(0).getTextContent();					
 					
-					String processed2 = preprocess(processThis);
-					String file_number = String.format("%06d", i+1);
-					FileWriter fp = new FileWriter(files_path+file_number+".txt");
+					processed2 = preprocess(processThis);
+					//String file_number = String.format("%06d", i+1);
+					fp = new BufferedWriter(new FileWriter(files_path+i+".txt"));
 					fp.write(date + "\n" + processed2);
-					fp.close();					
+					processed2 = "";
+					fp.close();			
 				}
 				
 			} // end of for block
