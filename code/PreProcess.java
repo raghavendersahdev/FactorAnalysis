@@ -44,7 +44,7 @@ public class PreProcess
 		punctuations.add('-');		punctuations.add('@');
 		punctuations.add('#');		punctuations.add('$');
 		punctuations.add('%');		punctuations.add('^');
-		punctuations.add('&');	
+		punctuations.add('&');		punctuations.add('_');	
 	}
 	
 	/**
@@ -160,9 +160,8 @@ public class PreProcess
 		long time1 = System.currentTimeMillis();
 		
 		PreProcess tester = new PreProcess();
-		String corpus_Path = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/2013-07/en_2013-07-18_0b2be55af46644a7d56fcd8d8d3e7929ce24b2.xml";
 			
-		String corpusPath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/2013-07";
+		String corpusPath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/en/2013-11";
 		File folder = new File(corpusPath);
 		File[] listOfFiles = folder.listFiles();
 		ArrayList<String> filePaths = new ArrayList<String>();
@@ -177,6 +176,12 @@ public class PreProcess
 		}
 		try 
 		{
+			
+			NodeList nList;
+			Node nNode;
+			Element eElement;
+			String processThis;
+			String date;
 			for(int i=0 ; i<NUM_FILES; i++)
 			{
 				File fXmlFile = new File(filePaths.get(i));
@@ -184,33 +189,32 @@ public class PreProcess
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(fXmlFile);
 				  
-				//optional, but recommended
-				//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-				doc.getDocumentElement().normalize();				
-				//System.out.println("Root element :" + doc.getDocumentElement().getNodeName());							
-				NodeList nList = doc.getChildNodes();			  
-				//doc.getElementsByTagName(Id);
-				//System.out.println("----------------------------"+nList.getLength());					  
-				Node nNode = nList.item(0);						
-				//System.out.println("\nCurrent Element :" + nNode.getNodeName());						
+				doc.getDocumentElement().normalize();											
+				nList = doc.getChildNodes();			  			  
+				nNode = nList.item(0);											
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) 
 				{			
-					Element eElement = (Element) nNode;					   
-					String processThis = eElement.getElementsByTagName("Text").item(0).getTextContent();
-					String date = eElement.getElementsByTagName("PublicationDateTime").item(0).getTextContent();
+					eElement = (Element) nNode;					   
+					processThis = eElement.getElementsByTagName("Text").item(0).getTextContent();
+					date = eElement.getElementsByTagName("PublicationDateTime").item(0).getTextContent();
 					
 					if(tester.checkLanguage(processThis))
 					{
 						String processed2 = tester.preprocess(processThis);
-						//System.out.println(processed2+" \n "+date);
+						///System.out.println(processed2+" \n "+date);
 						String file_number = String.format("%06d", i+1);
-						FileWriter fp = new FileWriter("/home/sahdev/Desktop/Fall2015/samples/sample"+file_number+".txt");
+						//total = total + date+"\n"+processed2+"\n";
+						FileWriter fp = new FileWriter("/home/sahdev/Desktop/Fall2015/samples4/sample"+file_number+".txt");
 						fp.write(date + "\n" + processed2);
 						fp.close();					
 					}
 					
-				}	
-			} // end of catch block
+				}
+				
+			} // end of for block
+			
+			
+			
 		} // end of try
 		catch (Exception e) 
 		{
