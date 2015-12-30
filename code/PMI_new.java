@@ -41,7 +41,9 @@ public class PMI_new
 		
 	}
 	
-	
+	/**
+	 * this function computes the Hash map for vocabulary, this increases the efficiencyof the program
+	 * /
 	public static void computeVocabularyMapping()
 	{
 		for(int i=0 ; i<vocabulary.size() ; i++)
@@ -49,6 +51,9 @@ public class PMI_new
 			vocabulary_map.put(vocabulary.get(i), i);
 		}
 	}
+	/**
+	 * this computes the mapping for the seed words, increases the efficiency of the program 
+	 * /
 	public static void computeSeedMapping()
 	{
 		int i;
@@ -77,7 +82,9 @@ public class PMI_new
 		br2.close();
 		
 	}
-
+	/**
+	 * this sets the vocabulary for the current corpus by reading the results of the word embedding
+	 * /
 	public static void setVocabulary() throws IOException
 	{		
 		BufferedReader br = new BufferedReader(new FileReader(word2vec_path));
@@ -95,7 +102,11 @@ public class PMI_new
 		bw.close();;
 		br.close();
 	}
-	
+	/**
+	 * this generates the fequency of each word from the vocabulary over the entire corpus
+	 * @param vocabulary_size input to this function is the vocabulary size
+	 * @return returns the array containing the word counts for each word
+	 * /
 	public static int[] getVocabualryCounts(int vocabulary_size) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new FileReader(corpusPathFile));
@@ -129,7 +140,12 @@ public class PMI_new
 		br.close();
 		return word_occur;
 	}
-	
+	/**
+	 * this function computes the co_occurrence matrix of seed words and vocabulary words
+	 * @param seed_word_size this is the number of seed words
+	 * @param vocabulary_size this is the number of distinct words in the vocabulary
+	 * @return returns the 2D array containing the co_occurrence matrix
+	 * /
 	public static int[][] getCo_occurrenceMatrix(int seed_word_size,int vocabulary_size)throws IOException
 	{
 		BufferedReader br2 = new BufferedReader(new FileReader(corpusPathFile));
