@@ -15,12 +15,16 @@ import org.w3c.dom.NodeList;
  * this class is responsible for pre processing the files and store the preprocessed files in a new folder
  * @author raghavender sahdev
  */
-public class PreProcess3 
+public class PreProcess3
 {
 	public static ArrayList<String> stopWords = new ArrayList<String>();
+	public static HashMap<String,Integer> stopWordsMap = new HashMap<String,Integer>();
 	public static HashMap<Character,Integer> punctuations = new HashMap<Character,Integer>();
 	public static String corpusPath = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/replaced2";
-	public static String files_path = "/home/sahdev/Desktop/Fall2015/nov/n"; 
+	public static String files_path = "/home/sahdev/Desktop/Fall2015/nov4/n";
+	public static String files_path2 = "/home/sahdev/Desktop/Fall2015/nov4_content/n";
+
+	public static String stopWordsFile = "/home/sahdev/Desktop/Fall2015/Data Mining/PROJECT/stopWords.txt";
 	/**
 	 * constructor to initialize the punctuation array list
 	 */
@@ -61,20 +65,107 @@ public class PreProcess3
 	{
 		
 		text = text.toLowerCase();
-		/*String temp = text;
-		for(int i=0 ; i<text.length() ; i++)
-		{
-			if(punctuations.get(text.charAt(i)) != null)
-			{
-				if(text.charAt(i) == '\n')
-				{
-					temp = temp.replace(text.charAt(i)+"", " ");
-					continue;
-				}	
-				temp = temp.replace(text.charAt(i)+"","");//.charAt(i) = "";				
-			}
-		}*/
+		text = text.replace(",", "");		text = text.replace(".", "");
+		text = text.replace(";", "");		text = text.replace(":", "");
+		text = text.replace("\\", "");		text = text.replace("/", "");
+		text = text.replace("!", "");		text = text.replace("\'", "");
+		text = text.replace("\"", "");		text = text.replace("*", "");
+		text = text.replace("(", "");		text = text.replace(")", "");
+		text = text.replace("1", "");		text = text.replace("2", "");
+		text = text.replace("3", "");		text = text.replace("4", "");
+		text = text.replace("5", "");		text = text.replace("6", "");
+		text = text.replace("7", "");		text = text.replace("8", "");
+		text = text.replace("9", "");		text = text.replace("0", "");
+		text = text.replace("[", "");		text = text.replace("]", "");
+		text = text.replace("{", "");		text = text.replace("}", "");
+		text = text.replace("~", "");		text = text.replace("?", "");
+		text = text.replace("-", "");		text = text.replace("@", "");
+		text = text.replace("#", "");		text = text.replace("$", "");
+		text = text.replace("%", "");		text = text.replace("^", "");
+		text = text.replace("&", "");		text = text.replace("_", "");
+		text = text.replace(">", "");		text = text.replace("<", "");
+		text = text.replace("’", "");		text = text.replace("|", "");
+		text = text.replace("“", "");		text = text.replace("”", "");
+		text = text.replace("»", "");		text = text.replace("«", "");
+		text = text.replace("\"", "");		text = text.replace("—", "");
+		text = text.replace("+", "");		text = text.replace("‰", "");
+		text = text.replace("„", "");       text = text.replace("■", "");
+		text = text.replace("‘", "");		text = text.replace("–", "");
+		text = text.replace("…", "");		text = text.replace("★", "");   
+		/*text = text.replace(',', '\0');		text = text.replace('.', '\0');
+		text = text.replace(';', '\0');		text = text.replace(':', '\0');
+		text = text.replace('\\', '\0');		text = text.replace('/', '\0');
+		text = text.replace('!', '\0');		text = text.replace('\'', '\0');
+		text = text.replace('"', '\0');		text = text.replace('*', '\0');
+		text = text.replace('(', '\0');		text = text.replace(')', '\0');
+		text = text.replace('1', '\0');		text = text.replace('2', '\0');
+		text = text.replace('3', '\0');		text = text.replace('4', '\0');
+		text = text.replace('5', '\0');		text = text.replace('6', '\0');
+		text = text.replace('7', '\0');		text = text.replace('8', '\0');
+		text = text.replace('9', '\0');		text = text.replace('0', '\0');
+		text = text.replace('[', '\0');		text = text.replace(']', '\0');
+		text = text.replace('{', '\0');		text = text.replace('}', '\0');
+		text = text.replace('~', '\0');		text = text.replace('?', '\0');
+		text = text.replace('-', '\0');		text = text.replace('@', '\0');
+		text = text.replace('#', '\0');		text = text.replace('$', '\0');
+		text = text.replace('%', '\0');		text = text.replace('^', '\0');
+		text = text.replace('&', '\0');		text = text.replace('_', '\0');
+		text = text.replace('>', '\0');		text = text.replace('<', '\0');
+		text = text.replace('’', '\0');		text = text.replace('|', '\0');
+		text = text.replace('“', '\0');		text = text.replace('”', '\0');
+		text = text.replace('»', '\0');		text = text.replace('\"', '\0');
+		
+		*/
+	
 		return text;
+	}
+	/**
+	 *  the following function populates the stopWords arrayList
+	 * @param filePath specify the file Path containing the stopWords
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static void generateStopWords(String filePath)throws FileNotFoundException,IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
+		String str = "";
+		int cnt = 1;
+		while((str = br.readLine()) != null)
+		{
+			if(str.equals("") || str.equals("\n"))
+				continue;
+			stopWords.add(str);
+			stopWordsMap.put(str, cnt);
+			cnt ++;
+		}
+		br.close();	
+	}
+	/**
+	 * this returns the processed String after removing the stop words, it replaces the stop words with an empty string
+	 * @param text the input string to be pre-processed
+	 * @return the processed string
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	public static String removeStopWords(String text) throws FileNotFoundException, IOException
+	{
+		
+		//System.out.println(stopWords);
+		StringTokenizer tkn = new StringTokenizer(text," ");
+		String processed = "";
+		while(tkn.hasMoreTokens())
+		{
+			String temp_word = tkn.nextToken();
+			if((stopWordsMap.get(temp_word) != null))
+			{
+				//text = text.replace(temp_word, "");
+			}
+			else
+			{
+				processed = processed + " " + temp_word;
+			}
+		}
+		return processed;
 	}
 	
 	/**
@@ -87,7 +178,9 @@ public class PreProcess3
 	public static String preprocess(String text)throws FileNotFoundException,IOException
 	{
 		String text1 = removePunctuation(text);
-		return text1;		
+		String text2 = removeStopWords(text1);
+		
+		return text2;		
 	}
 
 	/**
@@ -100,7 +193,7 @@ public class PreProcess3
 		long time1 = System.currentTimeMillis();
 		
 		generatePunctuations();
-		
+		generateStopWords(stopWordsFile);
 		File folder = new File(corpusPath);
 		File[] listOfFiles = folder.listFiles();
 		ArrayList<String> filePaths = new ArrayList<String>();
@@ -121,7 +214,7 @@ public class PreProcess3
 			Element eElement;
 			String processThis;
 			String date;
-			BufferedWriter fp;
+			BufferedWriter fp,fp2;
 			String processed2 = "";
 			for(int i=0 ; i<NUM_FILES; i++)
 			{
@@ -144,9 +237,12 @@ public class PreProcess3
 					processed2 = preprocess(processThis);
 					//String file_number = String.format("%06d", i+1);
 					fp = new BufferedWriter(new FileWriter(files_path+i+".txt"));
+					fp2 = new BufferedWriter(new FileWriter(files_path2+i+".txt"));
 					fp.write(date + "\n" + processed2);
+					fp2.write(processed2);
 					processed2 = "";
-					fp.close();			
+					fp.close();	
+					fp2.close();
 				}
 				
 			} // end of for block
