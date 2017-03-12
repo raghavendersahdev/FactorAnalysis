@@ -42,17 +42,17 @@ In this project we have written the following files: <br/>
 
 In this part we explain how to run our program. So one should follow the following steps to execute our code:
 
-* Step 1: Run the PreProcess.java file to pre-process the files. Input to this program is the path to the corpus which contains all the files. Output path for the pre-processed files should be specified by the user.
-* Step 2: Run the PreProcess2.java to concatenate all the files generated in step 1 in a single text file.
-* Step 3: Run the Word2VecRawTextExample.java to compute the word vector representations.
-* Step 4: Run the Similarities.java to compute the scores for documents based on word embedding OR run the PMI_new.java to compute the score based on PMI
-* Step 5: Run the GenerateScores.java to compute the violence scores for each day.
+* <u> Step 1: <u/> Run the PreProcess.java file to pre-process the files. Input to this program is the path to the corpus which contains all the files. Output path for the pre-processed files should be specified by the user.
+* <u> Step 2: <u/> Run the PreProcess2.java to concatenate all the files generated in step 1 in a single text file.
+* <u>Step 3:<u/> Run the Word2VecRawTextExample.java to compute the word vector representations.
+* <u>Step 4:</u> Run the Similarities.java to compute the scores for documents based on word embedding OR run the PMI_new.java to compute the score based on PMI
+* <u>Step 5:</u> Run the GenerateScores.java to compute the violence scores for each day.
 
 ## Sample Input and Output
 A sample input to our program is the path to the corpus. Sample outputs are: <br/> 
 * Vocabulary of words
 * Violence scores for each day 
-* Plot of violence scores vs. days (shown in the plots earlier in the report)
+* Plot of violence scores vs. days (shown in the plots earlier in the report) </br>
 Limitations of the software <br/>
 The amount of RAM usage for 300,000 files is about 12GB while running the Word2VecRawTextExample.java, so this might be a problem for computers having lesser RAM.
 
